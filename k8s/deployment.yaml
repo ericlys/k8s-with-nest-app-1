@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: app-ts
+
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app-ts
+  template:
+    metadata:
+      labels:
+        app: app-ts
+    spec:
+      containers:
+        - name: app-ts
+          image: ericlys/app-ts:v1
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+            limits:
+              cpu: "200m"
+              memory: "128Mi"
