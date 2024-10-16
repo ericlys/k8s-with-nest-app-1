@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
         - name: app-ts
-          image: ericlys/app-ts:v1
+          image: ericlys/app-ts:v2
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
           resources:
