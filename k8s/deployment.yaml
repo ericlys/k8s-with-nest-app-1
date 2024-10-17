@@ -5,7 +5,7 @@ metadata:
   name: app-ts
 
 spec:
-  replicas: 10
+  replicas: 3
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -21,8 +21,14 @@ spec:
     spec:
       containers:
         - name: app-ts
-          image: ericlys/app-ts:v2
+          image: ericlys/app-ts:v3
           imagePullPolicy: IfNotPresent
+          env:
+            - name: APP
+              valueFrom:
+                configMapKeyRef:
+                  name: app-ts
+                  key: app-name
           ports:
             - containerPort: 3000
           resources:
