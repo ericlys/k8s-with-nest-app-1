@@ -4,4 +4,4 @@ kind: ConfigMap
 metadata:
   name: app-ts
 data:
-  app-name: eric-app
+  APP: eric-app
