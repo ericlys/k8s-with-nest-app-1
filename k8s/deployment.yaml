@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: app-ts
-          image: ericlys/app-ts:v3
+          image: ericlys/app-ts:v4
           imagePullPolicy: IfNotPresent
           env:
             - name: APP
@@ -29,6 +29,11 @@ spec:
                 configMapKeyRef:
                   name: app-ts
                   key: app-name
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-ts-secrets
+                  key: api-key
           ports:
             - containerPort: 3000
           resources:
