@@ -1,0 +1,16 @@
+# # Horizontal Pod Autoscaler is used to scale up or down to one application
+# apiVersion: autoscaling/v1
+# kind: HorizontalPodAutoscaler
+
+# metadata:
+#   name: app-ts-hpa
+# spec:
+#   scaleTargetRef:
+#     apiVersion: apps/v1
+#     kind: Deployment
+#     name: app-ts
+#   minReplicas: 3
+#   maxReplicas: 8
+#   targetCPUUtilizationPercentage: 75  #not set less than 30 or more than 85
+#   # targetMemoryUtilizationPercentage: 75  # deprecated-v1-targetMemory
+ 
