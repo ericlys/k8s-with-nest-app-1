@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: app-ts
-          image: ericlys/app-ts:v7
+          image: ericlys/app-ts:v8
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
@@ -45,10 +45,29 @@ spec:
             httpGet:
               path: /healthz 
               port: 3000
-            failureThreshold: 3
+            failureThreshold: 2
             successThreshold: 1 # at least one success
             timeoutSeconds: 1
             periodSeconds: 10
+            initialDelaySeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 3000
+            failureThreshold: 3
+            successThreshold: 1 
+            timeoutSeconds: 1
+            periodSeconds: 15
+            initialDelaySeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+            failureThreshold: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+            periodSeconds: 10
+            initialDelaySeconds: 10
           resources:
             requests:
               cpu: 400m

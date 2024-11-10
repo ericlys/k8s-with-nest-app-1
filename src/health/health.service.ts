@@ -2,10 +2,13 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class HealthService {
-  checkHealth(): string {
+  checkHealth(): boolean {
     // Todo: check dependencies
     console.log('Chequei a saúde da aplicação');
-    return 'OK!';
+    if (new Date().getMilliseconds() % 2 === 0) {
+      return true;
+    }
+    return false;
   }
 
   checkReady(): string {
