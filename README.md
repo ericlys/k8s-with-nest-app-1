@@ -35,3 +35,17 @@ https://github.com/fortio/fortio
 https://hub.docker.com/r/fortio/fortio
 kubectl get svc -n fist-app  -- to get the service to use the cluster app
 kubectl run -it fortio -n fist-app --rm --image=fortio/fortio -- load -qps 6000 -t 120s -c 50 "http://app-ts-svc/example-k8s"
+
+--- Probes - probing and verification 
+- Checks whether the application is ready to be used
+- For these tests, specific routes are required
+- Nestjs lib to check external services - @nestjs/terminus
+
+StartupProbe - 
+aims to ensure that it will go up and performs tests, such as connecting to external services, database, etc.
+
+ReadinessProbe - 
+checks whether the application is ready to receive traffic
+
+LivenessProbe -
+checks if the application is alive, being able to rebuild, alerts, etc.
