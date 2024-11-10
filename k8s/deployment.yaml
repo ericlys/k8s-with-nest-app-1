@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: app-ts
-          image: ericlys/app-ts:v8
+          image: ericlys/app-ts:v9
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
@@ -42,6 +42,11 @@ spec:
           ports:
             - containerPort: 3000
           startupProbe:
+            # exec:
+            #   command:
+            #     - /bin/sh 
+            #     - -c 
+            #     - check.sh #in main directory
             httpGet:
               path: /healthz 
               port: 3000
@@ -49,7 +54,7 @@ spec:
             successThreshold: 1 # at least one success
             timeoutSeconds: 1
             periodSeconds: 10
-            initialDelaySeconds: 30
+            initialDelaySeconds: 10 # need test to define the initial delay
           readinessProbe:
             httpGet:
               path: /readyz
@@ -58,7 +63,7 @@ spec:
             successThreshold: 1 
             timeoutSeconds: 1
             periodSeconds: 15
-            initialDelaySeconds: 10
+            initialDelaySeconds: 5
           livenessProbe:
             httpGet:
               path: /healthz
@@ -67,7 +72,7 @@ spec:
             successThreshold: 1
             timeoutSeconds: 1
             periodSeconds: 10
-            initialDelaySeconds: 10
+            initialDelaySeconds: 5
           resources:
             requests:
               cpu: 400m

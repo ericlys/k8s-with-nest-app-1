@@ -6,6 +6,4 @@ async function bootstrap() {
   await app.listen(3000);
 }
 
-setTimeout(() => {
-  bootstrap();
-}, 30 * 1000);
+bootstrap();

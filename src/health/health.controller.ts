@@ -7,11 +7,7 @@ export class HealthController {
 
   @Get('/healthz')
   healthz(): string {
-    const health = this.healthService.checkHealth();
-    if (health) {
-      return 'OK!';
-    }
-    throw new Error('Health check failed');
+    return this.healthService.checkHealth();
   }
 
   @Get('/readyz')
