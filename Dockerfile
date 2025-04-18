@@ -1,4 +1,4 @@
-FROM node:22.8.0 AS build
+FROM node:23.11.0 AS build
 
 WORKDIR /usr/src/app
 
@@ -9,10 +9,10 @@ RUN yarn
 
 COPY . .
 
-RUN yarn run build
+RUN yarn run build 
 RUN yarn workspaces focus --production && yarn cache clean
 
-FROM node:22.8.0-alpine3.20
+FROM node:23.11.0-alpine3.21
 
 WORKDIR /usr/src/app
 
