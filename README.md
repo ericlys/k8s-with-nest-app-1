@@ -1,13 +1,27 @@
 k8s-test commands:
 
+<!-- build project --------------------------->
+docker build app-ts:v2 .
+docker tag app-ts:v2 ericlys/app-ts:v2 
+ou
 docker build -t ericlys/app-ts:v2 .
-docker push ericlys/app-ts:v2
 
+docker push ericlys/app-ts:v2
+<!-- ------------------------------------- -->
+
+<!-- namespace k8s-->
+kubectl create ns fist-app
+
+<!-- aplicar configuracao no namespace -->
 kubectl apply -f k8s -n fist-app
 
+<!---------- comando emergencial (imperativo) -recomendado fazer tbm no deployment.yaml(declarativo)------------>
+<!-- para acompanhar as revisoes -->
 kubectl rollout history deployment/app-ts -n fist-app
 
+<!-- para retornar para uma revisao(versao) especifica que já foi aplicada em algum momento/ --to-revision=1 é opcional-->
 kubectl rollout undo deployment/app-ts --to-revision=1 -n fist-app
+<!-- ------------------------------------------------ -->
 
 watch kubectl get pods -n fist-app
 

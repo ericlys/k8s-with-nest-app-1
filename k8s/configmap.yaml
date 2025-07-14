@@ -1,7 +1,9 @@
-apiVersion: v1 
-kind: ConfigMap
+apiVersion: v1               # Versão da API para ConfigMap.
+kind: ConfigMap              # Tipo do recurso: ConfigMap.
 
 metadata:
-  name: app-ts
+  name: app-ts               # Nome do ConfigMap (referenciado no Deployment).
+
 data:
-  APP: eric-app
+  APP: eric-app              # Chave-valor de configuração.
+                             # Aqui está sendo definida a variável de ambiente APP com valor "eric-app".

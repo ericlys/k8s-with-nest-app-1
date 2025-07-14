@@ -1,14 +1,19 @@
-apiVersion: v1
-kind: Service
+apiVersion: v1               # Versão da API do Kubernetes para o recurso Service.
+kind: Service                # Define o tipo de recurso: um Service, que expõe um conjunto de pods.
 
 metadata:
-  name: app-ts-svc
+  name: app-ts-svc           # Nome do Service.
 
 spec:
-  type: ClusterIP
+  type: ClusterIP            # Tipo do Service:
+                             # - ClusterIP (padrão): acessível apenas internamente dentro do cluster.
+                             # - Outros tipos: NodePort, LoadBalancer, etc.
+
   selector:
-    app: app-ts
+    app: app-ts              # Seleciona os pods que possuem o label 'app: app-ts'.
+                             # Isso vincula o Service ao Deployment correspondente.
+
   ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 3000
+    - protocol: TCP          # Protocolo usado (geralmente TCP ou UDP).
+      port: 80               # Porta exposta pelo Service (porta que os clientes dentro do cluster irão acessar).
+      targetPort: 3000       # Porta no container/pod para onde o tráfego será redirecionado.

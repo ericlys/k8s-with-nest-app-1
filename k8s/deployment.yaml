@@ -1,33 +1,35 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: apps/v1 # Define a versão da API do Kubernetes usada para o recurso (Deployment).
+kind: Deployment     # Especifica o tipo de recurso que está sendo criado (um Deployment).
 
 metadata:
-  name: app-ts
+  name: app-ts       # Nome do Deployment.
 
 spec:
-  replicas: 6
+  replicas: 6        # Número de réplicas (pods) desejadas para manter ativas.
   strategy:
-    type: RollingUpdate
+    type: RollingUpdate           # Estratégia de atualização: faz rollout gradual. / Recreate - seria uma atualização completa.
     rollingUpdate:
-      maxSurge: 2
-      maxUnavailable: 1
+      maxSurge: 2                 # Permite até 2 ou % pods extras durante a atualização.
+      maxUnavailable: 1           # No máximo 1 ou % pod pode estar indisponível durante a atualização.
   selector:
     matchLabels:
-      app: app-ts
+      app: app-ts                # Seleciona os pods com esse label para serem gerenciados por este Deployment.
   template:
     metadata:
       labels:
-        app: app-ts
+        app: app-ts              # Define os labels para os pods que serão criados.
     spec:
       containers:
-        - name: app-ts
-          image: ericlys/app-ts:v9
-          imagePullPolicy: IfNotPresent
+        - name: app-ts           # Nome do container.
+          image: ericlys/app-ts:v10        # Imagem do container (com tag v10).
+          imagePullPolicy: IfNotPresent    # Só faz pull da imagem se ela não estiver presente localmente.
           envFrom:
             - configMapRef:
-                name: app-ts
+                name: app-ts              # Importa variáveis de ambiente do ConfigMap `app-ts`.
             - secretRef:
-                name: app-ts-secrets
+                name: app-ts-secrets      # Importa variáveis de ambiente do Secret `app-ts-secrets`.
+
+          # exemplo útil se quiser carregar variáveis individualmente:
           # env:
           #   - name: APP
           #     valueFrom:
@@ -39,32 +41,34 @@ spec:
           #       secretKeyRef:
           #         name: app-ts-secrets
           #         key: api-key
+
           ports:
-            - containerPort: 3000
+            - containerPort: 3000         # Porta exposta no container.
+
           startupProbe:
-            # exec:
-            #   command:
-            #     - /bin/sh 
-            #     - -c 
-            #     - check.sh #in main directory
+            # Verifica se o app conseguiu "subir" (executar) corretamente.
             httpGet:
-              path: /healthz 
+              path: /healthz              # Endpoint que será verificado.
               port: 3000
-            failureThreshold: 2
-            successThreshold: 1 # at least one success
-            timeoutSeconds: 1
-            periodSeconds: 10
-            initialDelaySeconds: 10 # need test to define the initial delay
+            failureThreshold: 2           # Após 2 falhas consecutivas, o container será considerado com erro.
+            successThreshold: 1           # Basta 1 sucesso para considerar que iniciou.
+            timeoutSeconds: 1             # Tempo limite de cada tentativa.
+            periodSeconds: 10             # Intervalo entre tentativas.
+            initialDelaySeconds: 10       # Tempo antes de iniciar a primeira tentativa.
+
           readinessProbe:
+            # Verifica se o app está pronto para receber tráfego (antes de adicionar ao LoadBalancer/Service).
             httpGet:
               path: /readyz
               port: 3000
             failureThreshold: 3
-            successThreshold: 1 
+            successThreshold: 1
             timeoutSeconds: 1
             periodSeconds: 15
             initialDelaySeconds: 5
+
           livenessProbe:
+            # Verifica se o app está saudável durante sua execução. Reinicia o container em caso de falha contínua.
             httpGet:
               path: /healthz
               port: 3000
@@ -73,11 +77,12 @@ spec:
             timeoutSeconds: 1
             periodSeconds: 10
             initialDelaySeconds: 5
+
           resources:
+            # Define requisições mínimas e limites máximos de CPU e memória.
             requests:
-              cpu: 400m
-              memory: 128Mi
+              cpu: 400m         # Requisição mínima de CPU (400 millicores).
+              memory: 128Mi     # Requisição mínima de memória.
             limits:
-              cpu: 700m
-              memory: 256Mi
-              
+              cpu: 700m         # Limite máximo de CPU.
+              memory: 256Mi     # Limite máximo de memória.
