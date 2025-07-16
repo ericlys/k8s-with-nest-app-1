@@ -73,3 +73,5 @@ checks whether the application is ready to receive traffic
 
 LivenessProbe -
 checks if the application is alive, being able to rebuild, alerts, etc.
+
+Ex: App A -Mysql, Kafka, Redis (this all routes need tests this all external dependencies)

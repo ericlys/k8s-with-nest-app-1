@@ -48,6 +48,11 @@ spec:
 
           startupProbe:
             # Verifica se o app conseguiu "subir" (executar) corretamente.
+            # exec:  # Pode ser usado para executar um comando específico.
+            #   command: 
+            #     - /bin/sh
+            #     - -c
+            #     - check.sh # Comando que será executado para verificar o estado inicial do app.
             httpGet:
               path: /healthz              # Endpoint que será verificado.
               port: 3000
@@ -65,7 +70,7 @@ spec:
             failureThreshold: 3
             successThreshold: 1
             timeoutSeconds: 1
-            periodSeconds: 15
+            periodSeconds: 15 #checa a cada 15 segundos
             initialDelaySeconds: 5
 
           livenessProbe:
