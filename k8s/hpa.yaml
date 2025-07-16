@@ -1,44 +1,56 @@
-apiVersion: autoscaling/v2
-kind: HorizontalPodAutoscaler
+# Horizontal Pod Autoscaler (v2) com escalonamento baseado em CPU e memória,
+# e comportamento personalizado para scale-up e scale-down.
+
+apiVersion: autoscaling/v2     # Versão v2 permite múltiplas métricas e políticas.
+kind: HorizontalPodAutoscaler  # Recurso de escalonamento horizontal automático.
 
 metadata:
-  name: app-ts-hpa
+  name: app-ts-hpa # Nome do HPA.
 spec:
-  scaleTargetRef:
-    apiVersion: apps/v1 #deployment
-    kind: Deployment
-    name: app-ts
-  minReplicas: 6
-  maxReplicas: 10
-  metrics:
-    - type: Resource
+  scaleTargetRef:                      # Define o alvo do HPA (geralmente um Deployment).
+    apiVersion: apps/v1                # Versão da API do recurso alvo.
+    kind: Deployment                   # Tipo do recurso alvo.
+    name: app-ts                       # Nome do Deployment que será escalado.
+
+  minReplicas: 6                       # Número mínimo de réplicas permitidas.
+  maxReplicas: 10                      # Número máximo de réplicas permitidas.
+
+  metrics:                             # Lista de métricas a serem monitoradas.
+    - type: Resource                   # Tipo de métrica: recurso (CPU, memória, etc).
       resource:
-        name: cpu
+        name: cpu                      # Métrica baseada em utilização de CPU.
         target:
-          type: Utilization
-          averageUtilization: 75
-    - type: Resource
+          type: Utilization            # Tipo do alvo: porcentagem da utilização média.
+          averageUtilization: 75       # Escala quando a utilização média da CPU > 75%.
+
+    - type: Resource                   # Segunda métrica: memória.
       resource:
         name: memory
         target:
           type: Utilization
-          averageUtilization: 80
+          averageUtilization: 80       # Escala quando utilização média de memória > 80%.
 
   behavior:
+    # Configura como o HPA deve se comportar ao diminuir o número de réplicas.
     scaleDown:
-      stabilizationWindowSeconds: 30 #default 5 min
-      policies: 
-        - type: Pods #cadency
+      stabilizationWindowSeconds: 30   # Tempo (em segundos) de espera para reduzir réplicas.
+                                       # Ajuda a evitar "ping-pong" de escalonamentos.
+                                       # Default: 300 (5 minutos), aqui está configurado como 30s.
+    policies:
+        - type: Pods                   # Reduz no máximo 2 pods a cada 15 segundos.
           value: 2
-          periodSeconds: 15  
-    #     - type: Percent
-    #       value: 20
-    #       periodSeconds: 15
-    #   selectPolicy: Min #Max
+          periodSeconds: 15
+       
+        # Outra opção comentada: redução percentual.
+        # - type: Percent
+        #   value: 20                  # Reduz até 20% das réplicas nesse período.
+        #   periodSeconds: 15
+
+    # selectPolicy: Min             # Se múltiplas políticas forem definidas, seleciona a mais conservadora (Min) ou agressiva (Max).
 
     scaleUp:
-      stabilizationWindowSeconds: 5
-      policies: 
-        - type: Pods #cadency
-          value: 2
-          periodSeconds: 5
+    stabilizationWindowSeconds: 5    # Tempo de espera para considerar escalonamento para cima.
+    policies:
+      - type: Pods                   # Pode adicionar até 2 pods a cada 5 segundos.
+        value: 2
+        periodSeconds: 5

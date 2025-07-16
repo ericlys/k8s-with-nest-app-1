@@ -1,16 +1,26 @@
-# # Horizontal Pod Autoscaler is used to scale up or down to one application
-# apiVersion: autoscaling/v1
-# kind: HorizontalPodAutoscaler
+# # Horizontal Pod Autoscaler é usado para escalar automaticamente o número de réplicas de um Deployment
+# # com base na utilização de CPU (ou memória, em versões mais recentes da API).
+
+# apiVersion: autoscaling/v1           # Versão da API usada (v1 suporta apenas CPU).
+# kind: HorizontalPodAutoscaler        # Tipo do recurso: um HPA (escala horizontal de pods).
 
 # metadata:
-#   name: app-ts-hpa
+#   name: app-ts-hpa                   # Nome do HPA.
+
 # spec:
-#   scaleTargetRef:
-#     apiVersion: apps/v1
-#     kind: Deployment
-#     name: app-ts
-#   minReplicas: 3
-#   maxReplicas: 8
-#   targetCPUUtilizationPercentage: 75  #not set less than 30 or more than 85
-#   # targetMemoryUtilizationPercentage: 75  # deprecated-v1-targetMemory
- 
+#   scaleTargetRef:                    # Referência ao Deployment que será monitorado/escalado.
+#     apiVersion: apps/v1              # Versão da API do Deployment.
+#     kind: Deployment                 # Tipo de recurso a ser escalado (Deployment, StatefulSet, etc).
+#     name: app-ts                     # Nome do Deployment alvo (deve ser igual ao definido no seu deployment.yaml).
+
+#   minReplicas: 3                     # Número mínimo de réplicas permitidas.
+#   maxReplicas: 8                     # Número máximo de réplicas permitidas.
+
+#   targetCPUUtilizationPercentage: 75 # Define o alvo de utilização da CPU. Se a média ultrapassar 75%,
+#                                      # o HPA vai escalar os pods.
+#                                      # Recomendado: evitar valores muito baixos (<30%) ou altos (>85%) 
+#                                      # pois pode causar oscilações ou falta de resposta.
+  
+#   # targetMemoryUtilizationPercentage: 75
+#   # Comentado porque a API `autoscaling/v1` não suporta isso.
+#   # Escalonamento baseado em memória está disponível a partir do autoscaling/v2beta2.

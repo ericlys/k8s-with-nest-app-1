@@ -3,6 +3,7 @@ kind: Deployment     # Especifica o tipo de recurso que está sendo criado (um D
 
 metadata:
   name: app-ts       # Nome do Deployment.
+  # namespace: first-app  # Namespace onde o Deployment será criado.
 
 spec:
   replicas: 6        # Número de réplicas (pods) desejadas para manter ativas.

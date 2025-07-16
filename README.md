@@ -25,10 +25,17 @@ kubectl rollout undo deployment/app-ts --to-revision=1 -n fist-app
 
 watch kubectl get pods -n fist-app
 
----
+<!-- ---configurando hpa para que funcione em ambiente local para que funcione o certificado-->
+<!-- --kubelet-insecure-tls -->
+<!-- https://github.com/kubernetes-sigs/metrics-server -->
 wget https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+<!-- renomeamos o components para metrics-server e add o kubelet insecure tls em spec no deploy do arquivo -->
 kubectl delete -f metrics-server.yaml
 kubectl apply -f metrics-server.yaml
+
+<!-- verificar o cpu e a memoria dos pods -->
+kubectl top po -n fist-app
+<!-- ------------------------------------------------------------------------------------------ -->
 
 kubectl get po -n kube-system
 
