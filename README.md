@@ -36,26 +36,29 @@ kubectl apply -f metrics-server.yaml
 <!-- verificar o cpu e a memoria dos pods -->
 kubectl top po -n fist-app
 <!-- ------------------------------------------------------------------------------------------ -->
+<!-- comando para verificar configuracao de hpa ou outros arquivos -->
+kubectl get hpa -n fist-app
+<!--  -->
 
 kubectl get po -n kube-system
 
+<!-- remover configuracao hpa -->
 kubectl delete hpa app-ts-hpa -n fist-app
+<!--  -->
 
----
-metrics server -
-https://github.com/kubernetes-sigs/metrics-server
-
-hpa - trigger
-Metrics - cpu and memory 
-v1- kubectl apply -f k8s/hpa.yaml  -n fist-app
-kubectl get hpa -n fist-app
-kubectl delete hpa app-ts-hpa -n fist-app
-
---- stress test
+<!-- --- stress test -->
 https://github.com/fortio/fortio
 https://hub.docker.com/r/fortio/fortio
 kubectl get svc -n fist-app  -- to get the service to use the cluster app
+<!-- executa um teste de carga temporário com o Fortio diretamente no seu cluster Kubernetes, gerando tráfego HTTP para o seu serviço app-ts-svc. -->
 kubectl run -it fortio -n fist-app --rm --image=fortio/fortio -- load -qps 6000 -t 120s -c 50 "http://app-ts-svc/example-k8s"
+<!-- 
+  Cria um pod fortio temporário no namespace fist-app.
+  Envia 6000 requisições por segundo por 2 minutos com até 50 conexões simultâneas.
+  Para o endpoint: http://app-ts-svc/example-k8s.
+  Após o teste, o pod se remove automaticamente (--rm).
+ -->
+
 
 --- Probes - probing and verification 
 - Checks whether the application is ready to be used
