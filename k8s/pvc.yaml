@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+
+metadata:
+  name: fist-pvc
+
+spec:
+  resources:
+    requests:
+      storage: 1Gi #para todo o deploy
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  selector:
+    matchLabels:
+      name: fist-pv
+

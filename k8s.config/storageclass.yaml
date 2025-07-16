@@ -1,0 +1,16 @@
+# a nivel de cluster, o storageclass é o que define como os volumes serão provisionados
+# e gerenciados no Kubernetes. Ele define o tipo de provisionamento, políticas de retenção,
+# e outras características dos volumes que serão criados a partir dele.
+# O storageclass é usado para provisionar volumes persistentes (PV) automaticamente quando
+# um PersistentVolumeClaim (PVC) é criado. Ele permite que os administradores do cluster
+# definam diferentes tipos de armazenamento com características específicas, como desempenho,
+# capacidade e políticas de backup.
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+
+metadata:
+  name: first-storage-class  # Nome da StorageClass.
+
+provisioner: k8s.io/np-provisioner  # Provisionador usado para criar volumes (ex: hostPath, AWS EBS, etc.).
+reclaimPolicy: Retain  # Política de retenção do volume após o PVC ser deletado (Retain, Delete, etc.).
+volumeBindingMode: WaitForFirstConsumer  # Modo de vinculação do volume, aguarda até que um pod consuma o volume antes de provisioná-lo.
