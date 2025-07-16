@@ -85,8 +85,10 @@ Ex: App A -Mysql, Kafka, Redis (this all routes need tests this all external dep
 kubectl get storageclass
 <!--É legal desalocal o volume do cluster para evitar complexidades de aumento de memória futuros-->
 >Volumes - reserva de espaco alocado com o nosso provisiodador
+  kubectl apply -f pv.yaml 
+  kubectl get pv -n fist-app
 <!-- pvc - associa o deploy com o volume, requerendo uma parte do volume reservado -->
 >Claim - pvc - persistent volume claim
-  kubectl apply -f pv.yaml 
-  kubectl get pv
+    kubectl get pvc -n fist-app
+    kubectl describe pvc -n fist-app
 <!-- ------------------------------------------------------------------------------------ -->
