@@ -92,3 +92,13 @@ spec:
             limits:
               cpu: 700m         # Limite máximo de CPU.
               memory: 256Mi     # Limite máximo de memória.
+              
+          volumeMounts:
+            - name: app-ts-data  # Nome do volume a ser montado.
+              mountPath: /usr/src/app/uploads  # Monta o volume persistente no caminho especificado dentro do container (dockerfile da imagem).
+     
+      volumes:
+        - name: app-ts-data  # Nome do volume persistente.
+          persistentVolumeClaim:
+            claimName: fist-pvc  # Nome do PersistentVolumeClaim que será usado para provisionar o volume.
+            # O PVC deve ser criado previamente e deve ter o mesmo nome especificado  

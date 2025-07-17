@@ -4,7 +4,7 @@ kind: PersistentVolume
 metadata:
   name: fist-pv
   labels:
-    name: first-pv
+    name: fist-pv
 
 spec:
   capacity:

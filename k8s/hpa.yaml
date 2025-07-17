@@ -36,21 +36,20 @@ spec:
       stabilizationWindowSeconds: 30   # Tempo (em segundos) de espera para reduzir réplicas.
                                        # Ajuda a evitar "ping-pong" de escalonamentos.
                                        # Default: 300 (5 minutos), aqui está configurado como 30s.
-    policies:
+      policies:
         - type: Pods                   # Reduz no máximo 2 pods a cada 15 segundos.
           value: 2
           periodSeconds: 15
-       
         # Outra opção comentada: redução percentual.
         # - type: Percent
         #   value: 20                  # Reduz até 20% das réplicas nesse período.
         #   periodSeconds: 15
 
-    # selectPolicy: Min             # Se múltiplas políticas forem definidas, seleciona a mais conservadora (Min) ou agressiva (Max).
+      # selectPolicy: Min             # Se múltiplas políticas forem definidas, seleciona a mais conservadora (Min) ou agressiva (Max).
 
     scaleUp:
-    stabilizationWindowSeconds: 5    # Tempo de espera para considerar escalonamento para cima.
-    policies:
+      stabilizationWindowSeconds: 5    # Tempo de espera para considerar escalonamento para cima.
+      policies:
       - type: Pods                   # Pode adicionar até 2 pods a cada 5 segundos.
         value: 2
         periodSeconds: 5

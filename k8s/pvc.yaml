@@ -11,7 +11,7 @@ spec:
   storageClassName: standard
   accessModes:
     - ReadWriteOnce
-  selector:
-    matchLabels:
-      name: fist-pv
+  # selector:
+  #   matchLabels:
+  #     name: fist-pv
 

@@ -83,6 +83,7 @@ Ex: App A -Mysql, Kafka, Redis (this all routes need tests this all external dep
 >StorageClass - conversa com o nosso provisionador
 <!-- mostra o storageclass padrão -->
 kubectl get storageclass
+kubectl apply -f k8s.config/storageclass.yaml
 <!--É legal desalocal o volume do cluster para evitar complexidades de aumento de memória futuros-->
 >Volumes - reserva de espaco alocado com o nosso provisiodador
   kubectl apply -f pv.yaml 
@@ -91,4 +92,16 @@ kubectl get storageclass
 >Claim - pvc - persistent volume claim
     kubectl get pvc -n fist-app
     kubectl describe pvc -n fist-app
+
+    <!-- testando- entrando no pod e consumindo o pvc -->
+    kubectl get pods -n fist-app
+    kubectl exec -it app-ts-f8d5588b9-6fmcl -n fist-app -- /bin/sh
+    <!-- add um arquivo lá dentro -->
+    echo "Olá" > file.txt  
+    ls
+    <!-- porém se entramos na outra replica o arquivo n estara lá -->
+    e se apagarmos o pod
+    kubectl delete pod app-ts-f8d5588b9-6fmcl -n fist-app
+    e entrarmos no novo o arquivo tbm n estara lá
+    por isso precisamos configurar no deployment o volumeMounts
 <!-- ------------------------------------------------------------------------------------ -->

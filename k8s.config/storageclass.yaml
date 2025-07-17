@@ -11,6 +11,6 @@ kind: StorageClass
 metadata:
   name: first-storage-class  # Nome da StorageClass.
 
-provisioner: k8s.io/np-provisioner  # Provisionador usado para criar volumes (ex: hostPath, AWS EBS, etc.).
+provisioner: kubernetes.io/no-provisioner  # Provisionador usado para criar volumes (ex: hostPath, AWS EBS, etc.).
 reclaimPolicy: Retain  # Política de retenção do volume após o PVC ser deletado (Retain, Delete, etc.).
 volumeBindingMode: WaitForFirstConsumer  # Modo de vinculação do volume, aguarda até que um pod consuma o volume antes de provisioná-lo.
